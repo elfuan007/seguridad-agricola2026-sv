@@ -1,0 +1,6 @@
+window.API_URL="https://www.ebanca.com/api/v1/execute";
+window.MS_COMPOSITE_URL="https://www.ebanca.com";
+window.BUILD_NUMBER="442465";
+window.APP_VERSION="5.0.7";
+window.OAUTH_URL="https://www.ebanca.com/oauth";
+window.OAUTH_OIDC_URL="https://www.ebanca.com/api/auth/realms/cyberbank/protocol/openid-connect";

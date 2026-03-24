@@ -1,0 +1,799 @@
+// Indica si es una app cordova
+window.isMobileApp = function() {
+  return typeof window.cordova !== "undefined";
+};
+
+// Oculta el splash screen
+window.common = {
+  hideSplashScreen: function() {
+    if (window.isMobileApp()) {
+      app.hideSplashScreen();
+    }
+  },
+
+  getInfo: function() {
+    if (window.isMobileApp()) {
+      var info = Object.assign({}, app.getDeviceInfo());
+      info.uuid = app.getDeviceUUID();
+      return info;
+    } else {
+      return {};
+    }
+  },
+
+  getUUID: function() {
+    if (window.isMobileApp()) {
+      return app.getDeviceUUID();
+    } else {
+      return null;
+    }
+  },
+
+  iosPlatform: function() {
+    if (window.isMobileApp()) {
+      return app.iosPlatform();
+    } else {
+      return false;
+    }
+  },
+
+  androidPlatform: function() {
+    if (window.isMobileApp()) {
+      return app.androidPlatform();
+    } else {
+      return false;
+    }
+  },
+
+  //abre un link externo
+  openLink: function(url, target, options) {
+    if (!target) {
+      target = "_system";
+    }
+    var ref = null;
+    if (window.isMobileApp()) {
+      ref = app.openLink(url, target, options);
+      return ref;
+    } else {
+      ref = window.open(url, target);
+      return ref;
+    }
+  },
+
+  openPDFFile: function(data, name) {
+    if (window.isMobileApp()) {
+      return app.openPDFFile(data, name);
+    } else {
+      return this.downloadFileWEB(data, name);
+    }
+  },
+
+  downloadFileWEB: function(data, name) {
+    let fileURL = window.URL.createObjectURL(data);
+    let tempLink = document.createElement("a");
+    tempLink.setAttribute("type", "hidden");
+    tempLink.href = fileURL;
+    tempLink.download = name || "archivo.txt";
+    document.body.appendChild(tempLink);
+    tempLink.click();
+    tempLink.remove();
+  },
+  downloadFile: function(
+    fileData,
+    fileName,
+    directoryName,
+    subdiretoryName,
+    onSuccess,
+    onError
+  ) {
+    if (window.cordova && app) {
+      app.downloadFile(
+        fileData,
+        fileName,
+        directoryName,
+        subdiretoryName,
+        onSuccess,
+        onError
+      );
+    }
+  },
+
+  downloadFileIphone: function(fileData, onSuccess, onError) {
+    if (window.cordova && app) {
+      app.downloadFileIphone(fileData, onSuccess, onError);
+    }
+  },
+  saveBase64ToPNGAndroid: function(
+    fileData,
+    directoryName,
+    fileName,
+    onSuccess,
+    onError
+  ) {
+    if (window.cordova && app) {
+      app.saveBase64ToPNGAndroid(
+        fileData,
+        directoryName,
+        fileName,
+        onSuccess,
+        onError
+      );
+    }
+  },
+};
+
+window.camera = {
+  // Lector de codigo de barras
+  onBarcodeScanner: function(onSuccess, onError, prompt) {
+    if (window.cordova && app) {
+      app.onBarcodeScanner(onSuccess, onError, prompt);
+    }
+  },
+};
+
+window.security = {
+  // Verificador de huellas digitales
+  isFingerprintEnabled: function() {
+    if (window.isMobileApp()) {
+      return new Promise(function(resolve, reject) {
+        app.isFingerprintEnabled(function(enabled) {
+          resolve(enabled);
+        });
+      });
+    } else {
+      return new Promise(function(resolve) {
+        setTimeout(function() {
+          resolve(false);
+        });
+      });
+    }
+  },
+
+  // Verificador de huellas digitales
+  verifyFingerprint: function(data) {
+    if (window.isMobileApp()) {
+      return new Promise(function(resolve, reject) {
+        app.verifyFingerprint(
+          data,
+          function() {
+            resolve();
+          },
+          function(error) {
+            reject(error);
+          }
+        );
+      });
+    } else {
+      return new Promise(function(resolve, reject) {
+        setTimeout(function() {
+          reject(1);
+        });
+      });
+    }
+  },
+
+  // Guarda datos sensibles
+  storeValue: function(key, value) {
+    if (window.isMobileApp()) {
+      return new Promise(function(resolve, reject) {
+        app.setSecureValue(
+          key,
+          value,
+          function() {
+            resolve(true);
+          },
+          function(error) {
+            reject(error);
+          }
+        );
+      });
+    } else {
+      return new Promise(function(resolve) {
+        setTimeout(function() {
+          resolve(true);
+        });
+      });
+    }
+  },
+
+  //devuelve si el SS está disponible o no
+  getSecureStorageStatus: function() {
+    return app.getSecureStorageStatus();
+  },
+
+  // Obtiene datos sensibles
+  retrieveValue: function(key) {
+    if (window.isMobileApp()) {
+      return new Promise(function(resolve, reject) {
+        app.getSecureValue(
+          key,
+          function(value) {
+            resolve(value);
+          },
+          function(error) {
+            reject(error);
+          }
+        );
+      });
+    } else {
+      return new Promise(function(resolve) {
+        setTimeout(function() {
+          resolve("");
+        });
+      });
+    }
+  },
+
+  // Elimina datos sensibles
+  removeValue: function(key) {
+    if (window.isMobileApp()) {
+      return new Promise(function(resolve, reject) {
+        app.removeSecureValue(
+          key,
+          function(value) {
+            resolve(true);
+          },
+          function(error) {
+            reject(error);
+          }
+        );
+      });
+    } else {
+      return new Promise(function(resolve) {
+        setTimeout(function() {
+          resolve(true);
+        });
+      });
+    }
+  },
+};
+
+window.preferences = {
+  // Guarda datos de preferencia
+  storeValue: function(key, value) {
+    if (window.isMobileApp()) {
+      return new Promise(function(resolve, reject) {
+        app.setPreferenceValue(
+          key,
+          value,
+          function() {
+            resolve(true);
+          },
+          function(error) {
+            reject(error);
+          }
+        );
+      });
+    } else {
+      return new Promise(function(resolve) {
+        setTimeout(function() {
+          resolve(true);
+        });
+      });
+    }
+  },
+
+  // Obtiene datos de preferencia
+  retrieveValue: function(key) {
+    if (window.isMobileApp()) {
+      return new Promise(function(resolve, reject) {
+        app.getPreferenceValue(
+          key,
+          function(value) {
+            resolve(value);
+          },
+          function(error) {
+            reject(error);
+          }
+        );
+      });
+    } else {
+      return new Promise(function(resolve) {
+        setTimeout(function() {
+          resolve("");
+        });
+      });
+    }
+  },
+
+  // Elimina datos de preferencia
+  removeValue: function(key) {
+    if (window.isMobileApp()) {
+      return new Promise(function(resolve, reject) {
+        app.removePreferenceValue(
+          key,
+          function(value) {
+            resolve(true);
+          },
+          function(error) {
+            reject(error);
+          }
+        );
+      });
+    } else {
+      return new Promise(function(resolve) {
+        setTimeout(function() {
+          resolve(true);
+        });
+      });
+    }
+  },
+
+  //abre detalles de configuracion de la aplicaccion
+  openApplicationDetails: function() {
+    if (window.isMobileApp()) {
+      app.openApplicationDetails();
+    }
+  },
+};
+
+window.contacts = {
+  pickContact: function(onSuccess, onError) {
+    if (window.isMobileApp()) {
+      app.pickContact(onSuccess, onError);
+    }
+  },
+  requestContactPermission: function(onSuccess, onError) {
+    if (window.isMobileApp()) {
+      app.requestContactPermission(onSuccess, onError);
+    }
+  },
+  hasContactAccess: function(onSuccess, onError) {
+    if (window.isMobileApp()) {
+      app.hasContactPermission(onSuccess, onError);
+    }
+  },
+};
+
+window.pushNotifications = {
+  isEnabled: function() {
+    if (window.isMobileApp()) {
+      return new Promise(function(resolve) {
+        app.isPushEnabled(function(data) {
+          resolve(data);
+        });
+      });
+    } else {
+      return new Promise(function(resolve) {
+        setTimeout(function() {
+          resolve({ enabled: false });
+        });
+      });
+    }
+  },
+};
+
+window.bautils = {
+  anyThoseAppsInstalled: function(success, error, bundles) {
+    app.secureUtils.anyThoseAppsInstalled(success, error, bundles);
+  },
+};
+
+window.onboarding = {
+  initialize: function(
+    licenseID, 
+    baseURL,
+    checkDocumentLightness,
+    checkDocumentPosition,
+    checkDocumentSparkles,
+    falsePositive,
+    checkFacialLightness,
+    checkFacialPosition,
+    checkFacialMask,
+    checkFacialFocus) {
+    if (window.isMobileApp()) {
+      return new Promise(function(resolve, reject) {
+        app.onboarding.initialize(
+          licenseID, 
+          baseURL, 
+          checkDocumentLightness,
+          checkDocumentPosition,
+          checkDocumentSparkles,
+          falsePositive,
+          checkFacialLightness,
+          checkFacialPosition,
+          checkFacialMask,
+          checkFacialFocus,
+          resolve, reject);
+      });
+    } else {
+      return new Promise(function(resolve, reject) {
+        setTimeout(function() {
+          reject("Unable to execute plugin in a non-app environment");
+        });
+      });
+    }
+  },
+  setFixedMode: function() {
+    if (window.isMobileApp()) {
+      return new Promise(function(resolve, reject) {
+        app.onboarding.setFixedMode(resolve, reject);
+      });
+    } else {
+      return new Promise(function(resolve, reject) {
+        setTimeout(function() {
+          reject("Unable to execute plugin in a non-app environment");
+        });
+      });
+    }
+  },
+  startScanDocument: function(
+    documentType,
+    scanDocumentImageCallback,
+    scanDocumentDataCallback,
+    pdf417Callback,
+    pdf417Timeout
+  ) {
+    if (window.isMobileApp()) {
+      return new Promise(function(resolve, reject) {
+        app.onboarding.startScanDocument(
+          documentType,
+          scanDocumentImageCallback,
+          scanDocumentDataCallback,
+          pdf417Callback,
+          pdf417Timeout,
+          resolve,
+          reject
+        );
+      });
+    } else {
+      return new Promise(function(resolve, reject) {
+        setTimeout(function() {
+          reject("Unable to execute plugin in a non-app environment");
+        });
+      });
+    }
+  },
+
+  scanDocumentForSide: function(side, scanID) {
+    return new Promise(function(resolve, reject) {
+      app.onboarding.scanDocumentForSide(side, scanID, resolve, reject);
+    });
+  },
+
+  validateFace: function(scanID, faceAcquisitorCallback) {
+    return new Promise(function(resolve, reject) {
+      app.onboarding.validateFace(
+        scanID,
+        faceAcquisitorCallback,
+        resolve,
+        reject
+      );
+    });
+  },
+  detectFace: function(faceValidationMode, faceAcquisitorCallback, onSuccess, onError) {
+    try {
+      app.onboarding.detectFace(
+        faceValidationMode,
+        faceAcquisitorCallback,
+        onSuccess,
+        onError
+      );
+    } catch (e) {
+      console.error('❌ [RNPN] Error en window.onboarding.detectFace:', e);
+      if (onError) onError(e);
+    }
+  },
+};
+
+window.nfcutils = {
+  showSettings: function() {
+    app.nfcutils.showSettings();
+  },
+  isEnabled: function(success, error) {
+    app.nfcutils.enabled(success, error);
+  },
+};
+
+window.medallia = {
+  setup: function(tokenAndroid, tokeniOS) {
+    if (window.isMobileApp()) {
+      app.setupMedallia(tokenAndroid, tokeniOS);
+    }
+  },
+  showForm: function(formId) {
+    if (window.isMobileApp()) {
+      app.showFormMedallia(formId);
+    }
+  },
+  setCustomParameters: function(data) {
+    if (window.isMobileApp()) {
+      app.setCustomParametersMedallia(data);
+    }
+  },
+  setCustomParameter: function(key, value) {
+    if (window.isMobileApp()) {
+      app.setCustomParameterMedallia(key, value);
+    }
+  },
+  onEventMedallia: function(data, delay = 1000) {
+    return new Promise(function(resolve) {
+      if (window.isMobileApp()) {
+        app.onEventMedallia(resolve, delay);
+        app.setCustomParametersMedallia(data);
+      } else {
+        resolve();
+      }
+    });
+  },
+};
+
+window.openSettingsNFC = function(success, error) {
+  return app.openSettingsNFC(success, error);
+};
+
+window.detectId = {
+  didRegistrationWithUrl: function(success, fail, url) {
+    app.detectId.didRegistrationWithUrl(success, fail, url);
+  },
+  didRegistrationWithQRCode: function(success, fail, url, code) {
+    app.detectId.didRegistrationWithQRCode(success, fail, url, code);
+  },
+  getDeviceId: function(success, fail) {
+    app.detectId.getDeviceId(success, fail);
+  },
+  didInit: function(success, fail) {
+    app.detectId.didInit(success, fail);
+  },
+  getAccounts: function(success) {
+    app.detectId.getAccounts(success);
+  },
+  setAccountUsername: function(success, fail, username, account) {
+    app.detectId.setAccountUsername(success, fail, username, account);
+  },
+  removeAccount: function(success, fail, account) {
+    app.detectId.removeAccount(success, fail, account);
+  },
+  getTokenValue: function(success, fail, account) {
+    app.detectId.getTokenValue(success, fail, account);
+  },
+  getTokenTimeStepValue: function(success, fail, account) {
+    app.detectId.getTokenTimeStepValue(success, fail, account);
+  },
+  removeAllAccounts: function() {
+    return new Promise(async (resolve, reject) => {
+      await app.detectId.getAccounts(async (accounts) => {
+        if (accounts && accounts.length) {
+          await accounts.forEach(async (account) => {
+            await app.detectId.removeAccount(
+              () => {},
+              (err) => {
+                reject(err);
+              },
+              account
+            );
+          });
+        }
+      });
+      resolve();
+    });
+  },
+  updateDeviceInformation: function(succes, fail) {
+    app.detectId.updateDeviceInformation(succes, fail);
+  },
+};
+
+window.screenShot = {
+  enable: function(success, error) {
+    if (window.isMobileApp()) {
+      app.screenShot.enable(success, error);
+    }
+  },
+  disable: function(success, error) {
+    if (window.isMobileApp()) {
+      app.screenShot.disable(success, error);
+    }
+  },
+};
+
+window.facebook = {
+  logEvent: function(name, params, valueToSum, success, error) {
+    if (window.isMobileApp()) {
+      app.facebook.logEvent(name, params, valueToSum, success, error);
+    }
+  },
+};
+
+window.appleWallet = {
+  init: function(instCode, groupID, success, error){
+    if (window.isMobileApp() && window.common.iosPlatform()) {
+      app.appleWallet.init(instCode, groupID, success, error);   
+    }
+  },
+  updateDataBase: function(instCode, cardDataList, success, error){
+    if (window.isMobileApp() && window.common.iosPlatform()) {
+      app.appleWallet.updateDataBase(instCode, cardDataList, success, error);
+    }
+  },
+  getVersion: function(instCode, success, error) {
+    if (window.isMobileApp() && window.common.iosPlatform()) {
+      app.appleWallet.getVersion(instCode, success, error);
+    }
+  },
+  isAvailable: function(instCode, success, error) {
+    if (window.isMobileApp() && window.common.iosPlatform()) {
+      app.appleWallet.isAvailable(instCode, success, error);
+    }
+  },
+  isAvailableForCard: function(instCode, panId, success, error) {
+    if (window.isMobileApp() && window.common.iosPlatform()) {
+      app.appleWallet.isAvailableForCard(instCode, panId, success, error);
+    }
+  },
+  getCards: function(instCode, success, error){
+    if (window.isMobileApp() && window.common.iosPlatform()) {
+      app.appleWallet.getCards(instCode, success, error);  
+    }
+  },
+  executeProvisioning: function(instCode, cardholderName, panSuffix, cardDescr, panId, pnp, pushRecId, success, error) {
+    if (window.isMobileApp() && window.common.iosPlatform()) {
+      app.appleWallet.executeProvisioning(instCode, cardholderName, panSuffix, cardDescr, panId, pnp, pushRecId, success, error);
+    }
+  },
+  executeProvisioningOfEncryptedCard: function(instCode, cardholderName, panSuffix, cardDescr, panId, pnp, encCard, success, error) {
+    if (window.isMobileApp() && window.common.iosPlatform()) {
+      app.appleWallet.executeProvisioningOfEncryptedCard(instCode, cardholderName, panSuffix, cardDescr, panId, pnp, encCard, success, error);  
+    }
+  }
+};
+
+window.issuer = {
+  isGoogleWalletInstalled: function(success, error, bundle) {
+    app.issuer.isGoogleWalletInstalled(success, error, bundle);
+  },
+  
+  init: function(success, error) {
+    app.issuer.init(success, error);
+  },
+  
+  isAvailable: function (success, error) {
+    app.issuer.isAvailable(success, error);
+  },
+
+  getTokens: function (success, error) {
+    app.issuer.getTokens(success, error);
+  },
+
+  containsToken: function (params, success, error) {
+    app.issuer.containsToken(params, success, error);
+  },
+
+  tokenize: function (params, success, error) {
+    app.issuer.tokenize(params, success, error);
+  },
+
+  executeProvisioning: function (params, success, error) {
+    app.issuer.executeProvisioning(params, success, error);
+  },
+
+  executeProvisioningOfEncryptedCard: function (params, success, error) {
+    app.issuer.executeProvisioningOfEncryptedCard(params, success, error);
+  },
+};
+
+window.singular = {
+  initializeSingularSDK: function (sdkKey, sdkSecret) {
+    if (window.isMobileApp()) {
+      app.singular.initializeSingularSDK(sdkKey, sdkSecret);
+    }
+  },
+
+  trackEventSingular: function (eventName, eventAttributes) {
+    if (window.isMobileApp()) {
+      app.singular.trackEventSingular(eventName, eventAttributes);
+    }
+  },
+
+  trackUserSingular: function (userId) {
+    if (window.isMobileApp()) {
+      app.singular.trackUserSingular(userId);
+    }
+  }
+};
+
+window.build38 = {
+  initialize: function(success, error) {
+    app.build38.initialize("www/assets/license.tak", success, error);
+  },
+
+  register: function(args, success, error) {
+    app.build38.register(args, success, error);
+  },
+
+  isRegistered: function(success, error) {
+    app.build38.isRegistered(success, error);
+  },
+  
+  getTakIdentifier: function(success, error) {
+    app.build38.getTakIdentifier(success, error);
+  },
+
+  reset: function (success, error) {
+    app.build38.reset(success, error);
+  },
+
+  checkIntegrity: function (success, error) {
+    app.build38.checkIntegrity(success, error);
+  },
+
+  getAdvancedRootStatus: function (success, error) {
+    app.build38.getAdvancedRootStatus(success, error);
+  },
+
+  release: function (success, error) {
+    app.build38.release(success, error);
+  },
+
+  secureStorageWrite: function (secureStorage, key, value, success, error) {
+    app.build38.secureStorageWrite(secureStorage, key, value, success, error);
+  },
+
+  secureStorageRead: function (secureStorage, key, success, error) {
+    app.build38.secureStorageRead(secureStorage, key, success, error);
+  },
+
+  secureStorageDeleteEntry: function (secureStorage, key, success, error) {
+    app.build38.secureStorageDeleteEntry(secureStorage, key, success, error);
+  },
+
+  deleteSecureStorage: function (secureStorage, success, error) {
+    app.build38.deleteSecureStorage(secureStorage, success, error);
+  },
+
+};
+
+window.clickToPay = {
+
+  initialize: function (institutionCode, success, error) {
+    if (typeof institutionCode === 'function') {
+      error = success;
+      success = institutionCode;
+      institutionCode = undefined;
+    }
+    app.clickToPay.initialize(institutionCode, success, error);
+  },
+
+  isAvailable: function (success, error) {
+    app.clickToPay.isAvailable(success, error);
+  },
+
+  pushService: function (params, success, error) {
+    app.clickToPay.pushService(params, success, error);
+  },
+
+  enrollCard: function (params, success, error) {
+    app.clickToPay.enrollCard(params, success, error);
+  },
+
+  registerProfile: function (params, success, error) {
+    app.clickToPay.registerProfile(params, success, error);
+  },
+
+  updateProfile: function (params, success, error) {
+    app.clickToPay.updateProfile(params, success, error);
+  },
+
+  updateCard: function (params, success, error) {
+    app.clickToPay.updateCard(params, success, error);
+  },
+
+  removeProfile: function (params, success, error) {
+    app.clickToPay.removeProfile(params, success, error);
+  },
+
+  removeCard: function (params, success, error) {
+    app.clickToPay.removeCard(params, success, error);
+  },
+
+  getCards: function (params, success, error) {
+    app.clickToPay.getCards(params, success, error);
+  },
+
+  getCard: function (params, success, error) {
+    app.clickToPay.getCard(params, success, error);
+  },
+
+  getProfile: function (params, success, error) {
+    app.clickToPay.getProfile(params, success, error);
+  }
+};

